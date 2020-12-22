@@ -8,9 +8,13 @@ export default function Dropdown({ options, prompt, value, onChange }) {
 <div className="selected-value">{prompt}</div>
 			<div className={`arrow ${open ? "open" : null}`}></div>
 		</div>
-		<div className="options">
+		<div className={`options ${open ? "open" : null}`}>
 			{options.map((option) => (
-				<div className="option">{option.name}</div>
+				<div className="option"
+				onClick={() => {
+					onChange(option);
+					setOpen(false);
+				}}>{option.name}</div>
 			))}
 		</div>
 	</div>
