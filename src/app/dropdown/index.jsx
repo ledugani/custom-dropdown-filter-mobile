@@ -1,7 +1,14 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./styles.css";
 
-export default function Dropdown({ options, prompt, value, onChange }) {
+export default function Dropdown({
+	options,
+	id,
+	label,
+	prompt,
+	value,
+	onChange
+}) {
 	const [ open, setOpen ] = useState(false);
 	const ref = useRef(null);
 
@@ -17,20 +24,21 @@ export default function Dropdown({ options, prompt, value, onChange }) {
 	return <div className="dropdown">
 		<div className="control" onClick={() => setOpen(prev => !prev)}>
 			<div className="selected-value" ref={ref}>
-				{value ? value.name : prompt}
+				{value ? value[label] : prompt}
 			</div>
 			<div className={`arrow ${open ? "open" : null}`}></div>
 		</div>
 		<div className={`options ${open ? "open" : null}`}>
 			{options.map((option) => (
 				<div
+					key={option[id]}
 					className={`option ${
 						value === option ? "selected" : null
 					}`}
 				onClick={() => {
 					onChange(option);
 					setOpen(false);
-				}}>{option.name}</div>
+				}}>{option[label]}</div>
 			))}
 		</div>
 	</div>
