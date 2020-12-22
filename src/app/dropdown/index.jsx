@@ -14,11 +14,17 @@ export default function Dropdown({
 	const ref = useRef(null);
 
 	useEffect(() => {
-		document.addEventListener("click", close);
-		return () => document.removeEventListener("click", close);
+		["click", "touchend"].forEach(e => {
+			document.addEventListener(e, toggle);
+		})
+
+		return () =>
+		["click", "touchend"].forEach(e => {
+			document.removeEventListener(e, toggle);
+		})
 	}, []);
 
-	function close(e) {
+	function toggle(e) {
 		setOpen(e && e.target === ref.current)
 	}
 
@@ -35,8 +41,14 @@ export default function Dropdown({
 		return "";
 	}
 
+	function selectOption(option) {
+		setQuery("");
+		onChange(option);
+		setOpen(false);
+	}
+
 	return <div className="dropdown">
-		<div className="control" onClick={() => setOpen(prev => !prev)}>
+		<div className="control">
 			<div className="selected-value">
 				<input
 					type="text"
@@ -47,7 +59,8 @@ export default function Dropdown({
 						setQuery(e.target.value)
 						onChange(null)
 					}}
-					onClick={() => setOpen(prev => !prev)}
+					onClick={toggle}
+					onTouchEnd={toggle}
 				/>
 			</div>
 			<div className={`arrow ${open ? "open" : null}`}></div>
@@ -59,11 +72,11 @@ export default function Dropdown({
 					className={`option ${
 						value === option ? "selected" : null
 					}`}
-				onClick={() => {
-					setQuery("");
-					onChange(option);
-					setOpen(false);
-				}}>{option[label]}</div>
+					onClick={() => selectOption(option)}
+					onTouchEnd={() => selectOption(option)}
+				>
+					{option[label]}
+				</div>
 			))}
 		</div>
 	</div>
