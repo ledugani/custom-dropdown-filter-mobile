@@ -2,8 +2,6 @@
   position: relative;
   color: #333;
 	cursor: default;
-	padding: 10px;
-	border: solid 1px #999;
 }
 
 .dropdown .arrow {
