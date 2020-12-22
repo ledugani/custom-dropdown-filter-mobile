@@ -1,7 +1,14 @@
 import React, { useState, useRef, useEffect } from "react";
 import "./styles.css";
 
-export default function Dropdown({ options, prompt, value, onChange }) {
+export default function Dropdown({
+	options,
+	id,
+	label,
+	prompt,
+	value,
+	onChange
+}) {
 	const [ open, setOpen ] = useState(false);
 	const [ query, setQuery ] = useState("");
 	const ref = useRef(null);
@@ -22,6 +29,12 @@ export default function Dropdown({ options, prompt, value, onChange }) {
 		);
 	}
 
+	function displayValue() {
+		if(query.length > 0) return query
+		if (value) return value[label];
+		return "";
+	}
+
 	return <div className="dropdown">
 		<div className="control" onClick={() => setOpen(prev => !prev)}>
 			<div className="selected-value">
@@ -29,7 +42,7 @@ export default function Dropdown({ options, prompt, value, onChange }) {
 					type="text"
 					ref={ref}
 					placeholder={value ? value[label] : prompt}
-					value={value || query}
+					value={displayValue}
 					onChange={e => {
 						setQuery(e.target.value)
 						onChange(null)
@@ -42,6 +55,7 @@ export default function Dropdown({ options, prompt, value, onChange }) {
 		<div className={`options ${open ? "open" : null}`}>
 			{filter(options).map((option) => (
 				<div
+					key={option[id]}
 					className={`option ${
 						value === option ? "selected" : null
 					}`}
@@ -49,7 +63,7 @@ export default function Dropdown({ options, prompt, value, onChange }) {
 					setQuery("");
 					onChange(option);
 					setOpen(false);
-				}}>{option.name}</div>
+				}}>{option[label]}</div>
 			))}
 		</div>
 	</div>
