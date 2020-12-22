@@ -5,6 +5,6 @@ import countries from "../data/countries.json";
 
 export default function App() {
   return <div style={{ width: 200 }}>
-		<Dropdown countries={countries}/>
+		<Dropdown options={countries} prompt='Select country.../>
 	</div>;
 }
